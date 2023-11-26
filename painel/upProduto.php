@@ -1,7 +1,16 @@
 <?php
- 
+
+
 ob_start();
 require('../sheep_core/config.php');
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$atualizaProdutos = new Ler();
+$atualizaProdutos->Leitura('produtos', "WHERE id = :id", "id={$id}");
+if($atualizaProdutos->getResultado()){
+   foreach($atualizaProdutos->getResultado() as $produto);
+   $produto = (object) $produto;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" >
@@ -13,7 +22,7 @@ require('../sheep_core/config.php');
         <link rel="stylesheet" href="assets/css/app.min.css">
       
         <link rel="stylesheet" href="assets/css/style.css">
-        
+         
 </head>
 <body>
 
@@ -25,19 +34,19 @@ require('../sheep_core/config.php');
       <section class="section" >
 
 
-            
+             
             <?php
             
             require_once('topo.php');
 
             ?>
       
-            
+             
 
 
            <br>
-         
-          <form action="filtros/criar.php" method="post" enctype="multipart/form-data">
+        
+          <form action="filtros/atualizar.php" method="post" enctype="multipart/form-data">
 
 
          <div class="section-body" >
@@ -51,19 +60,20 @@ require('../sheep_core/config.php');
                  
                 </div>
                 <div class="card-body">
-         
-                  <div class="form-group row mb-4">
+
+                <div class="form-group row mb-4">
                    
                     <div class="col-md-12">
                       <input type="file" class="form-control" name="capa">
                     </div>
                     
                   </div>
+         
 
                   <div class="form-group row mb-4">
                    
                     <div class="col-md-12">
-                      <input type="text" class="form-control" name="nome" placeholder="Título do Produto">
+                      <input type="text" class="form-control" name="nome" placeholder="Título do Produto" value="<?=$produto->nome ? $produto->nome : null?>">
                     </div>
                     
                   </div>
@@ -71,16 +81,16 @@ require('../sheep_core/config.php');
                   <div class="form-group row mb-4">
                    
                    <div class="col-md-12">
-                     <input type="text" class="form-control" name="valor" placeholder="Valor">
+                     <input type="text" class="form-control" name="valor" placeholder="Valor" value="<?=$produto->valor ? $produto->valor : null?>">
                    </div>
                    
                  </div>
 
-                  
+                  <input type="hidden" name="id" value="<?=$produto->id?>">
                   <div class="form-group row mb-4">
                    
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-lg btn-primary"  style="width:100%;" name="criarProduto" >Salvar</button>
+                        <button type="submit" class="btn btn-lg btn-primary"  style="width:100%;" name="upProduto" >Salvar</button>
                     </div>
 
                   </div>
@@ -91,7 +101,7 @@ require('../sheep_core/config.php');
           </div>
         </div>
             </form>
-      
+       
       </section>
       </div>
         

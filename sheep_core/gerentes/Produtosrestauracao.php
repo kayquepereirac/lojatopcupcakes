@@ -2,12 +2,12 @@
 
 class Produtos
 {
-
+    
     private $Data;
-    private $Id;
     private $Resultado;
 
     const BD = 'produtos'; 
+    
 
     public function CriarProduto(array $data)
     {
@@ -30,46 +30,15 @@ class Produtos
             
         }
     }
-
-    public function upProduto(int $id, array $data)
-    {
-       $this->Id = $id;
-       $this->Data = $data;
-       if(!$this->Data){
-        return $this->Resultado = false;
-       }
-
-       $this->Banco();
-       $this->addImagemNova();
-       $this->atualizaProdutoNaLoja();
-       
-    }
-
-    public function excluirProduto(int $id)
-    {
-        $this->Id = (int)  $id;
-        if(!$id){
-          return $this->Resultado = false;
-        }
-        
-        $this->vaiExcluirDoiBd();
-    }
-
+    
+    
+      
+     
+    
+  
     public function getResultado()
     {
          return $this->Resultado;
-    }
-
-    private function addImagemNova()
-    {
-      if(isset($this->Data['capa'])){
-        $enviaFoto = new Uploads('../../uploads/');
-        $enviaFoto->Image($this->Data['capa'], date('Y-m-d-').time());
-
-      }
-      if(isset($enviaFoto) && $enviaFoto->getResult()){
-        $this->Data['capa']  = $this->Data['capa'] != null ? $enviaFoto->getResult() : null; 
-      }
     }
 
 
@@ -96,33 +65,28 @@ class Produtos
       $criar = new Criar();
       $criar->Criacao(self::BD, $this->Data);
       if($criar->getResultado()){
-        return $this->Resultado = true;
-      }
-    }
-
-
-    private function atualizaProdutoNaLoja()
-    {
-      $atualizar = new Atualizar();
-      $atualizar->Atualizando(self::BD, $this->Data, "WHERE id = :id", "id={$this->Id}");
-      if($atualizar->getResultado()){
-        return $this->Resultado = true;
-      }
-    }
-
-    private function vaiExcluirDoiBd()
-    {
-      $excluir = new Excluir();
-      $excluir->Remover(self::BD, "WHERE id = :id", "id={$this->Id}");
-      if($excluir->getResultado()){
-        return $this->Resultado = true;
+        $this->Resultado = true;
+      }else{
+        $this->Resultado = false;
       }
     }
 
 
 
-
-
+  
+  public function RemoverProduto($produtoId)
+  {   
+      // Verificar se o ID do produto é válido
+      if (!is_numeric($produtoId) || $produtoId <= 0) {
+          $this->Resultado = false;
+          print_r('erro');
+      }else{
+          $sql = "DELETE FROM produtos WHERE id = :produtoId";
+          $stmt = $this->Data->prepare($sql);
+          $stmt->bindParam(':produtoId', $produtoId, PDO::PARAM_INT);
+          $stmt->execute();
+      }
+     
+  } 
 }
-
 ?>

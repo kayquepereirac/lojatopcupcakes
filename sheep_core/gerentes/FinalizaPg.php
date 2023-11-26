@@ -121,7 +121,7 @@ class FinalizaPg
 
                         $bankingBillet = [
                             "expire_at" => date('Y-m-d',strtotime("+ 3 days")),
-                            "message" => "Boleto gerado na plataforma EAD MaykonSilveira.com.br",
+                            "message" => "Boleto gerado com sucesso",
                             "customer" => $customer,
                         ];
 
@@ -135,9 +135,9 @@ class FinalizaPg
                         ];
 
                         try {
-                            $api = new Gerencianet($options);
+                           /* $api = new Gerencianet($options);
                             $response = $api->createOneStepCharge($params = [], $body);
-                            
+                            */
                             $compras = [
                                 "foto" => $produto->capa,
                                 "titulo" => $produto->nome,

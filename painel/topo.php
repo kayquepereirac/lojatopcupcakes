@@ -4,7 +4,7 @@
                   <div class="card-body">
                       <ul class="nav nav-pills" style="margin:5px; float:right;">
                       <li class="nav-item" >
-                        <a class="nav-link active"  href="addProduto.php">Novo </a>
+                        <a class="nav-link active"  href="addProduto.php">Novo Produto </a>
                       </li>
                      
                     </ul>
